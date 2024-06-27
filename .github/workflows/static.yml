@@ -31,13 +31,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: setup node 12
+        uses: actions/setup-node@v2
         with:
-          # Upload entire repository
-          path: '.'
+          node-version: '12'
+      #- name: Setup Pages
+      #  uses: actions/configure-pages@v5
+      #- name: Upload artifact
+      #  uses: actions/upload-pages-artifact@v3
+      #  with:
+      #    # Upload entire repository
+      #    path: '.'
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build site
+        run: npm run build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          github_token: ${{ secrets.ACTION_TOKEN }}
+          publish_dir: ./docs
