@@ -1,67 +1,54 @@
-name: Deploy to GitHub Pages
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
-    branches:
-      - main  # adjust this to your main branch 
+    branches: 
+      - main
 
 jobs:
+  # Single deploy job since we're just deploying
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-lastest
     env:
       NODE_OPTIONS: '--openssl-legacy-provider'
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set Git identity
-        run: |
-          git config --global user.email "kavi.radsar@gmail.com"
-          git config --global user.name "radsar"
-
-      - name: Set up Node.js
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: setup NodeJS
         uses: actions/setup-node@v2
         with:
-          node-version: '17'  # adjust to your Node.js version
-
-      - name: Install dependencies
+          node-version: '17'
+      - name: Install Dependencies
         run: npm install
-
-      - name: Build
+      - name: Build Project
         run: |
           npm run build
           npm run publishsitemap
           touch docs/.nojekyll
-
-      - name: Upload artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: docs  # adjust this to your build output directory
-
+          path: docs
       - name: Deploy
         run: npm run deploy
         env:
-          CI: true  # Optional: Set CI=true to prevent prompts in some scripts
-
+          CI: true
   deploy:
     runs-on: ubuntu-latest
     needs: build
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Download build artifact
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy Artifact
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: docs  # adjust this to your build output directory
-
-      - name: Deploy to GitHub Pages
+          path: docs
+      - name: Deploy to GitHub Pages to prod
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs  # adjust this to your build output directory
+          github_token: ${{ secrets.ACTION_TOKEN }}
+          publish_dir: ./docs
