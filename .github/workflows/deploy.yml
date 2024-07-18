@@ -17,6 +17,12 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+
+      - name: Setup Git Identity
+        run: |
+          git config --global user.name "ramadevi15"
+          git config --global user.email "rd.daicy@gmail.com"
+          
       - name: setup NodeJS
         uses: actions/setup-node@v2
         with:
