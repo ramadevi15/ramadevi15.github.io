@@ -10,16 +10,14 @@ on:
 jobs:
   # Single deploy job since we're just deploying
   build:
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
-        
+        uses: actions/checkout@v4
       - name: setup NodeJS
         uses: actions/setup-node@v2
         with:
           node-version: '17'
-          
       - name: Install Dependencies
         run: npm install
       - name: Build Project
@@ -41,7 +39,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Deploy Artifact
         uses: actions/download-artifact@v2
         with:
@@ -50,5 +48,5 @@ jobs:
       - name: Deploy to GitHub Pages to prod
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.ACTION_TOKEN }}
           publish_dir: ./docs
