@@ -23,12 +23,46 @@ import {
 
 const asOf = () => formatDate(new Date());
 
-export async function getStaticProps() {
-  const stats = await fetch('https://osstats.opensource.comcast.net/stats')
-    .then((response) => response.json());
+// export async function getStaticProps() {
+//   const stats = await fetch('https://osstats.opensource.comcast.net/stats')
+//     .then((response) => response.json());
 
-  return stats;
+//   return stats;
+// }
+
+export async function getStaticProps() {
+  try {
+    const stats = await fetch('https://osstats.opensource.comcast.net/stats')
+      .then((response) => response.json());
+
+    if (!stats) {
+      return {
+        notFound: true,
+      };
+    }
+
+    return {
+      props: {
+        staticToday: asOf(),
+        allRepos: stats.allRepos || [],
+        newRepos: stats.newRepos || [],
+        updateRepos: stats.updateRepos || [],
+        mostStarred: stats.mostStarred || [],
+        mostForked: stats.mostForked || [],
+        totalRepos: stats.totalRepos || 0,
+        totalSourceRepos: stats.totalSourceRepos || 0,
+        totalForkedRepos: stats.totalForkedRepos || 0,
+        totalMembers: stats.totalMembers || 0,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching stats:', error);
+    return {
+      notFound: true,
+    };
+  }
 }
+
 
 const Projects = ({
   staticToday,
