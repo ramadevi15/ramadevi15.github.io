@@ -39,10 +39,10 @@ jobs:
         with:
           name: build
           path: docs
-      - name: Deploy
-        run: npm run deploy
-        env:
-          CI: true
+      # - name: Deploy
+      #   run: npm run deploy
+      #   env:
+      #     CI: true
   deploy:
     runs-on: ubuntu-latest
     needs: build
