@@ -11,6 +11,9 @@ jobs:
   # Single deploy job since we're just deploying
   build:
     runs-on: ubuntu-latest
+
+    env:
+      NODE_OPTIONS: '--openssl-legacy-provider'
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -22,7 +25,6 @@ jobs:
         run: npm install
       - name: Build Project
         run: |
-          export NODE_OPTIONS=--openssl-legacy-provider
           npm run build
           npm run publishsitemap
           touch docs/.nojekyll
