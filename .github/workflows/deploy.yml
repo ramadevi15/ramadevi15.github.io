@@ -18,10 +18,10 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Setup Git Identity
-        run: |
-          git config --global user.name "ramadevi15"
-          git config --global user.email "rd.daicy@gmail.com"
+      # - name: Setup Git Identity
+      #   run: |
+      #     git config --global user.name "ramadevi15"
+      #     git config --global user.email "rd.daicy@gmail.com"
           
       - name: setup NodeJS
         uses: actions/setup-node@v2
@@ -57,5 +57,5 @@ jobs:
       - name: Deploy to GitHub Pages to prod
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.ACTION_TOKEN }}
           publish_dir: ./docs
